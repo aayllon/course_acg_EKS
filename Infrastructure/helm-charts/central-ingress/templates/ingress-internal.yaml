@@ -13,6 +13,7 @@ metadata:
 {{ toYaml . | indent 4 }}
 {{- end }}
 spec:
+  IngressClassName: alb
   rules:
   {{- range .Values.ingress.internal.hosts }}
     - host: {{ .hostname }}
@@ -25,9 +26,10 @@ spec:
               #servicePort: use-annotation
               service:
                 name: redirect
-              port:
-                name: use-annotation
+                port:
+                  name: use-annotation
           - path: /*
+            pathType: ImplementationSpecific
             backend:
               #serviceName: {{ .serviceName }}
               #servicePort: {{ .port }}
